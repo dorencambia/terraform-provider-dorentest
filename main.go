@@ -3,8 +3,8 @@ package main
 import (
 	"flag"
 
+	"github.com/dorencambia/terraform-provider-dorentest/internal/provider"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
-	"github.com/hashicorp/terraform-provider-scaffolding/internal/provider"
 )
 
 // Run "go generate" to format example terraform files and generate the docs for the registry/website
@@ -36,7 +36,7 @@ func main() {
 		Debug: debugMode,
 
 		// TODO: update this string with the full name of your provider as used in your configs
-		ProviderAddr: "registry.terraform.io/hashicorp/scaffolding",
+		ProviderAddr: "app.terraform.io/api/v2/organizations/cambia-demo/registry-providers/private/cambia-demo/dorentest",
 
 		ProviderFunc: provider.New(version),
 	}
