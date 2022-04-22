@@ -1,13 +1,18 @@
 set -e # exit if any line fails
 
-version=`git tag --points-at`
-version=${version#v} # remove the v at the beginning
+# change these
 provider_name="dorentest"
 tf_org="cambia-demo"
 base_url="https://app.terraform.io/api/v2/organizations/$tf_org/registry-providers"
 
+# get the tag of the current commit
+version=`git tag --points-at`
+version=${version#v} # remove the v at the beginning
+
+# list of all generated zip files without the .zip suffix
 zip_file_names="darwin_amd64 darwin_arm64 freebsd_386 freebsd_amd64 freebsd_arm freebsd_arm64 linux_386 linux_amd64 linux_arm linux_arm64 windows_386 windows_amd64 windows_arm windows_arm64"
 
+# download all the files that GoReleaser created in GitHub releases
 download_release_files() {
     base_download_url="https://github.com/dorencambia/terraform-provider-${provider_name}/releases/download"
     files="SHA256SUMS SHA256SUMS.sig"
@@ -20,7 +25,7 @@ download_release_files() {
     done
 }
 
-# only needs to be run once (per provider, NOT version)
+# create_provider only needs to be run once so versions can be created (per provider, NOT version)
 create_provider() {
     curl \
         -Ss \
@@ -31,6 +36,7 @@ create_provider() {
         $base_url
 }
 
+# create the provider version and then upload the 2 SHA files
 upload_sha_files() {
     create_provider_version() {
         curl \
@@ -49,6 +55,7 @@ upload_sha_files() {
 }
 
 
+# create provider platform for each type then upload the zipped binary along with its sha
 upload_zip_files() {
     create_provider_platform() {
         os=$1
