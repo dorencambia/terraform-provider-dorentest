@@ -44,3 +44,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish to Terraform Cloud
         run: ./publish.sh
+        env:
+          TF_TOKEN: ${{ secrets.TF_TOKEN }}
