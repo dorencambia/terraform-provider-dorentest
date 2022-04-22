@@ -6,12 +6,12 @@ provider_name="dorentest"
 tf_org="cambia-demo"
 base_url="https://app.terraform.io/api/v2/organizations/$tf_org/registry-providers"
 
-zip_files="darwin_amd64 darwin_arm64 freebsd_386 freebsd_amd64 freebsd_arm freebsd_arm64 linux_386 linux_amd64 linux_arm linux_arm64 windows_386 windows_amd64 windows_arm windows_arm64"
+zip_file_names="darwin_amd64 darwin_arm64 freebsd_386 freebsd_amd64 freebsd_arm freebsd_arm64 linux_386 linux_amd64 linux_arm linux_arm64 windows_386 windows_amd64 windows_arm windows_arm64"
 
 download_release_files() {
     base_download_url="https://github.com/dorencambia/terraform-provider-${provider_name}/releases/download"
     files="SHA256SUMS SHA256SUMS.sig"
-    for zip_file in zip_files; do
+    for zip_file in zip_file_names; do
         files+=" $zip_file.zip"
     done
     for file in $files; do
@@ -65,9 +65,9 @@ upload_zip_files() {
             $base_url/private/$tf_org/$provider_name/versions/$version/platforms
     }
 
-    for file in $zip_files; do
-        os=`echo $foo | cut -d '_' -f1`
-        arch=`echo $foo | cut -d '_' -f2`
+    for name in $zip_file_names; do
+        os=`echo $name | cut -d '_' -f1`
+        arch=`echo $name | cut -d '_' -f2`
         create_provider_platform $os $arch
     done
 }
