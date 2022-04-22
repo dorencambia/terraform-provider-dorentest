@@ -60,7 +60,7 @@ upload_zip_files() {
     create_provider_platform() {
         os=$1
         arch=$2
-        filename="terraform-provider-${provider_name}_${version}_${os}_${arch}.zip"
+        filename=$3
         sha_file="terraform-provider-${provider_name}_${version}_SHA256SUMS"
         shasum=`grep $filename $sha_file | cut -d ' ' -f1` # get sha from downloaded SHA256SUMS release file
         curl \
@@ -75,7 +75,14 @@ upload_zip_files() {
     for name in $zip_file_names; do
         os=`echo $name | cut -d '_' -f1`
         arch=`echo $name | cut -d '_' -f2`
-        create_provider_platform $os $arch
+        filename="terraform-provider-${provider_name}_${version}_${os}_${arch}.zip"
+
+        # create platform to upload the file
+        resp=`create_provider_platform $os $arch $filename`
+        # get url from reponse
+        provider_binary_upload_url=`echo $resp | jq -r '.data.links["provider-binary-upload"]'`
+        # upload the file
+        curl -Ss -T $filename $provider_binary_upload_url
     done
 }
 
