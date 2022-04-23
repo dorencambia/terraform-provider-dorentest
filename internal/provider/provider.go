@@ -27,11 +27,11 @@ func New(version string) func() *schema.Provider {
 	return func() *schema.Provider {
 		p := &schema.Provider{
 			DataSourcesMap: map[string]*schema.Resource{
-				"scaffolding_data_source": dataSourceScaffolding(),
+				"dorentest_data_source": dataSourceAppspec(),
 			},
-			ResourcesMap: map[string]*schema.Resource{
-				"scaffolding_resource": resourceScaffolding(),
-			},
+			// ResourcesMap: map[string]*schema.Resource{
+			// 	"scaffolding_resource": resourceScaffolding(),
+			// },
 		}
 
 		p.ConfigureContextFunc = configure(version, p)
