@@ -2,6 +2,8 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -24,9 +26,22 @@ func dataSourceAppspec() *schema.Resource {
 			},
 			"appspec": {
 				// This description is used by the documentation generator and the language server.
-				Description: "Raw text of juno_appspec.yml file",
+				Description: "Map of appspec",
 				Type:        schema.TypeMap,
 				Computed:    true,
+			},
+			"appspec_json_string": {
+				// This description is used by the documentation generator and the language server.
+				Description: "Raw text of juno_appspec.yml file",
+				Type:        schema.TypeString,
+				Computed:    true,
+			},
+			"return_map": {
+				// This description is used by the documentation generator and the language server.
+				Description: "Whether or not to try to return the map",
+				Type:        schema.TypeBool,
+				Default:     true,
+				Optional:    true,
 			},
 		},
 	}
@@ -43,7 +58,24 @@ func dataSourceAppspecRead(ctx context.Context, d *schema.ResourceData, meta int
 
 	d.SetId("some id")
 	d.Set("raw_appspec", "This is null in the response if I do not set it here?")
-	d.Set("appspec", appspec)
+
+	bytes, err := json.Marshal(appspec)
+	if err != nil {
+		fmt.Println("error:", err)
+	}
+	err = d.Set("appspec_json_string", string(bytes))
+	if err != nil {
+		fmt.Println("error:", err)
+	}
+
+	if !d.Get("return_map").(bool) {
+		return nil
+	}
+
+	err = d.Set("appspec", appspec)
+	if err != nil {
+		return diag.FromErr(err)
+	}
 	return nil
 
 	// use the meta value to retrieve your client from the provider configure method
