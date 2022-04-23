@@ -27,7 +27,7 @@ func New(version string) func() *schema.Provider {
 	return func() *schema.Provider {
 		p := &schema.Provider{
 			DataSourcesMap: map[string]*schema.Resource{
-				"dorentest_data_source": dataSourceAppspec(),
+				"dorentest_appspec": dataSourceAppspec(),
 			},
 			// ResourcesMap: map[string]*schema.Resource{
 			// 	"scaffolding_resource": resourceScaffolding(),

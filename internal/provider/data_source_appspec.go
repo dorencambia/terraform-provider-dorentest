@@ -11,7 +11,7 @@ import (
 func dataSourceAppspec() *schema.Resource {
 	return &schema.Resource{
 		// This description is used by the documentation generator and the language server.
-		Description: "Sample data source in the Terraform provider scaffolding.",
+		Description: "Pass in the content of a juno_appspec.yml file and get modified data back",
 
 		ReadContext: dataSourceAppspecRead,
 
@@ -21,6 +21,12 @@ func dataSourceAppspec() *schema.Resource {
 				Description: "Raw text of juno_appspec.yml file",
 				Type:        schema.TypeString,
 				Required:    true,
+			},
+			"appspec": {
+				// This description is used by the documentation generator and the language server.
+				Description: "Raw text of juno_appspec.yml file",
+				Type:        schema.TypeMap,
+				Computed:    true,
 			},
 		},
 	}
@@ -33,9 +39,10 @@ func dataSourceAppspecRead(ctx context.Context, d *schema.ResourceData, meta int
 	err := yaml.Unmarshal([]byte(data), &appspec)
 	if err != nil {
 		return diag.FromErr(err)
-		// log.Fatalf("error: %v", err)
 	}
 
+	d.SetId("some id")
+	d.Set("raw_appspec", "This is null in the response if I do not set it here?")
 	d.Set("appspec", appspec)
 	return nil
 
