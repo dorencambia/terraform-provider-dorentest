@@ -45,7 +45,7 @@ upload_sha_files() {
         --header "Authorization: Bearer $TF_TOKEN" \
         --header "Content-Type: application/vnd.api+json" \
         --request POST \
-        --data "{\"data\":{\"type\":\"registry-provider-versions\",\"attributes\":{\"version\":\"$version\",\"key-id\":\"$TF_TOKEN\",\"protocols\":[\"5.0\"]}}}" \
+        --data "{\"data\":{\"type\":\"registry-provider-versions\",\"attributes\":{\"version\":\"$version\",\"key-id\":\"$GPG_KEY_ID\",\"protocols\":[\"5.0\"]}}}" \
         $base_url/private/$tf_org/$provider_name/versions
     }
     create_provider_version_resp=`create_provider_version`
@@ -87,10 +87,20 @@ upload_zip_files() {
     done
 }
 
+check_required_env_vars() {
+    required="TF_TOKEN GPG_KEY_ID"
+    for x in $required; do
+        if [[ -z "${!x}" ]]; then
+            echo value required for ${x}
+            exit 1
+        fi
+    done
+}
+
 _publish() {
+    check_required_env_vars
     download_release_files
     upload_sha_files
     upload_zip_files
 }
-
 _publish

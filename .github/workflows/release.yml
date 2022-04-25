@@ -52,3 +52,4 @@ jobs:
         run: ./publish.sh
         env:
           TF_TOKEN: ${{ secrets.TF_TOKEN }}
+          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
