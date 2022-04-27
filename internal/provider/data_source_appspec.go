@@ -25,7 +25,7 @@ func dataSourceAppspec() *schema.Resource {
 			},
 			"lambdas": {
 				Computed: true,
-				Type:     schema.TypeList,
+				Type:     schema.TypeSet,
 				Elem:     lambda.Schema(),
 			},
 		},
@@ -43,6 +43,7 @@ func dataSourceAppspecRead(ctx context.Context, d *schema.ResourceData, meta int
 	if err != nil {
 		return diag.FromErr(err)
 	}
+	d.SetId("appspecid")
 	return nil
 }
 
