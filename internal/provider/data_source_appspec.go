@@ -3,7 +3,7 @@ package provider
 import (
 	"context"
 
-	"github.com/dorencambia/terraform-provider-dorentest/internal/appspec"
+	"github.com/dorencambia/terraform-provider-dorentest/internal/appspec/lambda"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
@@ -25,7 +25,7 @@ func dataSourceAppspec() *schema.Resource {
 			"lambdas": {
 				Computed: true,
 				Type:     schema.TypeList,
-				Elem:     appspec.LambdaSchema(),
+				Elem:     lambda.Schema(),
 			},
 		},
 	}
