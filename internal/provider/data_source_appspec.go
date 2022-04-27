@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 
+	"github.com/dorencambia/terraform-provider-dorentest/internal/appspec"
 	"github.com/dorencambia/terraform-provider-dorentest/internal/appspec/lambda"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -32,6 +33,16 @@ func dataSourceAppspec() *schema.Resource {
 }
 
 func dataSourceAppspecRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+	raw_appspec := d.Get("raw_appspec").(string)
+	// func ParseAppspec(input string) (Appspec, error) {
+	spec, err := appspec.ParseAppspec(raw_appspec)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+	err = d.Set("lambdas", lambda.Converter(spec.Lambdas.LambdaFunctions))
+	if err != nil {
+		return diag.FromErr(err)
+	}
 	return nil
 }
 
