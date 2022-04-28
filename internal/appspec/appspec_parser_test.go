@@ -74,4 +74,6 @@ sns_topics:
 	assert.Equal(t, nil, err)
 	// assert.Equal(t, "", got)
 	assert.Equal(t, "0.0.1", got.SnsTopics.Version)
+	assert.Len(t, got.Lambdas.LambdaFunctions, 2)
+	assert.Equal(t, "{{ function }}-2", got.Lambdas.LambdaFunctions[0].Function)
 }

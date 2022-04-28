@@ -7,6 +7,7 @@ import (
 
 func ParseAppspec(input string) (Appspec, error) {
 	a := Appspec{}
+	// var a Appspec
 	err := yaml.Unmarshal([]byte(input), &a)
 	if err != nil {
 		return Appspec{}, err
@@ -16,8 +17,8 @@ func ParseAppspec(input string) (Appspec, error) {
 
 type Appspec struct {
 	Lambdas struct {
-		Version         string `yaml:"version"`
-		LambdaFunctions []lambda.Lambda
+		Version         string          `yaml:"version"`
+		LambdaFunctions []lambda.Lambda `yaml:"lambda_functions"`
 	} `yaml:"lambdas"`
 	SnsTopics struct {
 		Version string `yaml:"version"`
