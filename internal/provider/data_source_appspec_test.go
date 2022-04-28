@@ -18,10 +18,16 @@ func TestAccDataSourceAppspec(t *testing.T) {
 				Config: testAccDataSourceAppspec,
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestMatchResourceAttr("data.dorentest_appspec.foo", "raw_appspec", regexp.MustCompile("---")),
-					// resource.TestMatchResourceAttr("data.dorentest_appspec.foo", "function_name", regexp.MustCompile("some-function-name")),
-					// resource.TestMatchTypeSetElemNestedAttrs("data.dorentest_appspec.foo", "lambdas.*", map[string]*regexp.Regexp{
-					// 	"function_name": regexp.MustCompile("some-function-name"),
-					// }),
+					resource.TestCheckTypeSetElemNestedAttrs("data.dorentest_appspec.foo", "lambdas.*",
+						map[string]string{
+							"function_name": "some-function-name",
+						},
+					),
+					resource.TestCheckTypeSetElemNestedAttrs("data.dorentest_appspec.foo", "lambdas.*",
+						map[string]string{
+							"function_name": "some-function-name-2",
+						},
+					),
 				),
 			},
 		},
@@ -36,6 +42,8 @@ lambdas:
   version: 1.0.0
   lambda_functions:
     - function: "some-function-name"
+      image_uri: 395127396906.dkr.ecr.us-west-2.amazonaws.com/chp-test-r635542-demo-lambda-container:latest
+    - function: "some-function-name-2"
       image_uri: 395127396906.dkr.ecr.us-west-2.amazonaws.com/chp-test-r635542-demo-lambda-container:latest
 EOT
 }

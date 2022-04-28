@@ -25,8 +25,9 @@ func dataSourceAppspec() *schema.Resource {
 			},
 			"lambdas": {
 				Computed: true,
-				Type:     schema.TypeSet,
-				Elem:     lambda.Schema(),
+				Type:     schema.TypeList,
+				Elem:     lambda.LambdaResource,
+				// Elem:     lambda.Schema(),
 			},
 		},
 	}

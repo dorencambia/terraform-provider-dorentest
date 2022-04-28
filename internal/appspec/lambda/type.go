@@ -7,6 +7,7 @@ type Lambda struct {
 	Description          string `yaml:"description,omitempty"`
 	SourceDir            string `yaml:"source_dir,omitempty"`
 	ConcurrencyLimit     int    `yaml:"concurrency_limit,omitempty"`
+	MemorySize           int    `yaml:"memory_size,omitempty"`
 	EnvironmentVariables struct {
 		Testvar1 string `yaml:"testvar1"`
 		Testvar2 string `yaml:"testvar2"`
