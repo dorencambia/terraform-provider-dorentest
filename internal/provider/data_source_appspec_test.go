@@ -48,3 +48,11 @@ lambdas:
 EOT
 }
 `
+
+// egress_rules:
+// - proto: tcp
+//   ports:
+// 	- 443
+// 	- 80
+//   cidr_ip: 10.0.0.0/8
+//   rule_desc: "egress from cambia networks"

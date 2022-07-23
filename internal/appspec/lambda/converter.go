@@ -33,12 +33,13 @@ func Converter(lambdas []Lambda) []interface{} {
 // Converts a struct to a map while maintaining the json alias as keys
 func StructToMap(obj interface{}) (newMap map[string]interface{}) {
 	data, err := json.Marshal(obj) // Convert to a json string
-
 	if err != nil {
 		return nil
 	}
-
 	err = json.Unmarshal(data, &newMap) // Convert to a map
+	if err != nil {
+		return nil
+	}
 	return newMap
 }
 
