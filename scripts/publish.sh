@@ -20,7 +20,7 @@ zip_file_names="linux_amd64"
 # download all the files that GoReleaser created in GitHub releases
 download_release_files() {
     echo "### downloading release files ###"
-    base_download_url="${GITHUB_REPO_URL}}/releases/download"
+    base_download_url="${GITHUB_REPO_URL}/releases/download"
     files="SHA256SUMS SHA256SUMS.sig"
     for zip_file in $zip_file_names; do
         files+=" $zip_file.zip"
