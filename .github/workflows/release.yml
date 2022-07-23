@@ -56,4 +56,5 @@ jobs:
           TF_ORG: "cambia-demo"
           PROVIDER_NAME: "dorentest"
           KEY_ID_OR_EMAIL: "doren.proctor@cambiahealth.com"
-          BASE_URL: "https://app.terraform.io/api/v2/organizations/cambia-demo/registry-providers"
+          TERRAFORM_REGISTRY_URL: "https://app.terraform.io/api/v2/organizations/cambia-demo/registry-providers"
+          GITHUB_REPO_URL: "https://github.com/dorencambia/terraform-provider-dorentest"

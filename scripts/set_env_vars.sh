@@ -10,4 +10,7 @@ export PROVIDER_NAME="dorentest"
 export KEY_ID_OR_EMAIL="doren.proctor@cambiahealth.com"
 
 # url to private registry
-export BASE_URL="https://app.terraform.io/api/v2/organizations/$TF_ORG/registry-providers"
+export TERRAFORM_REGISTRY_URL="https://app.terraform.io/api/v2/organizations/$TF_ORG/registry-providers"
+
+# url to the github repo hosting the provider
+export GITHUB_REPO_URL="https://github.com/dorencambia/terraform-provider-dorentest"

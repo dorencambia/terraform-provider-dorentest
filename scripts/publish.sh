@@ -1,3 +1,11 @@
+# required environment variables
+# TF_ORG: name of the organization in terraform cloud
+# PROVIDER_NAME: name of the provider being published
+# KEY_ID_OR_EMAIL: what was used when the gpg key was creatd
+# TERRAFORM_REGISTRY_URL: url to private terraform registry
+# GITHUB_REPO_URL: url to the github repo hosting the provider
+
+
 set -e # exit if any line fails
 
 version=$(git tag --points-at) # get the tag of the current commit
@@ -11,14 +19,14 @@ zip_file_names="linux_amd64"
 
 # download all the files that GoReleaser created in GitHub releases
 download_release_files() {
-    base_download_url="https://github.com/dorencambia/terraform-provider-${PROVIDER_NAME}/releases/download"
+    base_download_url="${GITHUB_REPO_URL}}/releases/download"
     files="SHA256SUMS SHA256SUMS.sig"
     for zip_file in $zip_file_names; do
         files+=" $zip_file.zip"
     done
     for file in $files; do
         filename="terraform-provider-${PROVIDER_NAME}_${version}_${file}"
-        curl -SsLO ${base_download_url}/v${version}/$filename
+        curl -SsLO ${GITHUB_REPO_URL}/v${version}/$filename
     done
 }
 
@@ -31,7 +39,7 @@ upload_sha_files() {
             --header "Content-Type: application/vnd.api+json" \
             --request POST \
             --data "{\"data\":{\"type\":\"registry-provider-versions\",\"attributes\":{\"version\":\"$version\",\"key-id\":\"$GPG_KEY_ID\",\"protocols\":[\"5.0\"]}}}" \
-            $BASE_URL/private/$TF_ORG/$PROVIDER_NAME/versions
+            $TERRAFORM_REGISTRY_URL/private/$TF_ORG/$PROVIDER_NAME/versions
     }
     create_provider_version_resp=$(create_provider_version)
     shasums_upload=$(echo $create_provider_version_resp | jq -r '.data.links["shasums-upload"]')
@@ -54,7 +62,7 @@ upload_zip_files() {
             --header "Content-Type: application/vnd.api+json" \
             --request POST \
             --data "{\"data\":{\"type\":\"registry-provider-version-platforms\",\"attributes\":{\"os\":\"${os}\",\"arch\":\"${arch}\",\"shasum\":\"${shasum}\",\"filename\":\"${filename}\"}}}" \
-            $BASE_URL/private/$TF_ORG/$PROVIDER_NAME/versions/$version/platforms
+            $TERRAFORM_REGISTRY_URL/private/$TF_ORG/$PROVIDER_NAME/versions/$version/platforms
     }
 
     for name in $zip_file_names; do
@@ -99,7 +107,7 @@ function require_vars() {
 }
 
 _publish() {
-    require_vars TF_TOKEN GPG_KEY_ID TF_ORG PROVIDER_NAME BASE_URL
+    require_vars TF_TOKEN GPG_KEY_ID TF_ORG PROVIDER_NAME TERRAFORM_REGISTRY_URL GITHUB_REPO_URL
     download_release_files
     upload_sha_files
     upload_zip_files

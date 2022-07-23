@@ -6,7 +6,7 @@ create_provider() {
         --header "Content-Type: application/vnd.api+json" \
         --request POST \
         --data "{\"data\":{\"type\":\"registry-providers\",\"attributes\":{\"name\":\"${PROVIDER_NAME}\",\"namespace\":\"${TF_ORG}\",\"registry-name\":\"private\"}}}" \
-        $BASE_URL
+        $TERRAFORM_REGISTRY_URL
 }
 
 # print an error and exit if any passed vars are not defined
@@ -27,6 +27,6 @@ function require_vars() {
 }
 
 # ensure these variables are set
-require_vars TF_TOKEN TF_ORG PROVIDER_NAME BASE_URL
+require_vars TF_TOKEN TF_ORG PROVIDER_NAME TERRAFORM_REGISTRY_URL
 # run the logic
 create_provider
