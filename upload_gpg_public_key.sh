@@ -3,10 +3,10 @@ if [[ -z "$TF_TOKEN" ]]; then
     exit 1
 fi
 
-TF_ORG="cambia-demo" # name of organization in terraform cloud
-KEY_ID_OR_EMAIL="doren.proctor@cambiahealth.com" # what was used when the gpg key was creatd
-public_key=`gpg --armor --export "$KEY_ID_OR_EMAIL"` # get key from gpg
-public_key=${public_key//$'\n'/\\n} # replace newlines with \n char
+TF_ORG="cambia-demo"                                  # name of organization in terraform cloud
+KEY_ID_OR_EMAIL="doren.proctor@cambiahealth.com"      # what was used when the gpg key was creatd
+public_key=$(gpg --armor --export "$KEY_ID_OR_EMAIL") # get key from gpg
+public_key=${public_key//$'\n'/\\n}                   # replace newlines with \n char
 
 data="{\"data\":{\"type\":\"gpg-keys\",\"attributes\":{\"namespace\":\"$TF_ORG\",\"ascii-armor\":\"$public_key\"}}}"
 

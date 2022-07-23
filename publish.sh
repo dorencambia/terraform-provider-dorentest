@@ -3,9 +3,8 @@ set -e # exit if any line fails
 # set environment variables
 . ./set_env_vars.sh
 
-
-version=`git tag --points-at` # get the tag of the current commit
-version=${version#v} # remove the v at the beginning
+version=$(git tag --points-at) # get the tag of the current commit
+version=${version#v}           # remove the v at the beginning
 
 # list of all generated zip files without the .zip suffix
 zip_file_names="darwin_amd64 darwin_arm64 freebsd_386 freebsd_amd64 freebsd_arm freebsd_arm64 linux_386 linux_amd64 linux_arm linux_arm64 windows_386 windows_amd64 windows_arm windows_arm64"
@@ -26,25 +25,23 @@ download_release_files() {
     done
 }
 
-
 # create the provider version and then upload the 2 SHA files
 upload_sha_files() {
     create_provider_version() {
         curl \
-        -Ss \
-        --header "Authorization: Bearer $TF_TOKEN" \
-        --header "Content-Type: application/vnd.api+json" \
-        --request POST \
-        --data "{\"data\":{\"type\":\"registry-provider-versions\",\"attributes\":{\"version\":\"$version\",\"key-id\":\"$GPG_KEY_ID\",\"protocols\":[\"5.0\"]}}}" \
-        $BASE_URL/private/$TF_ORG/$PROVIDER_NAME/versions
+            -Ss \
+            --header "Authorization: Bearer $TF_TOKEN" \
+            --header "Content-Type: application/vnd.api+json" \
+            --request POST \
+            --data "{\"data\":{\"type\":\"registry-provider-versions\",\"attributes\":{\"version\":\"$version\",\"key-id\":\"$GPG_KEY_ID\",\"protocols\":[\"5.0\"]}}}" \
+            $BASE_URL/private/$TF_ORG/$PROVIDER_NAME/versions
     }
-    create_provider_version_resp=`create_provider_version`
-    shasums_upload=`echo $create_provider_version_resp | jq -r '.data.links["shasums-upload"]'`
-    shasums_sig_upload=`echo $create_provider_version_resp | jq -r '.data.links["shasums-sig-upload"]'`
+    create_provider_version_resp=$(create_provider_version)
+    shasums_upload=$(echo $create_provider_version_resp | jq -r '.data.links["shasums-upload"]')
+    shasums_sig_upload=$(echo $create_provider_version_resp | jq -r '.data.links["shasums-sig-upload"]')
     curl -Ss --upload-file ./terraform-provider-${PROVIDER_NAME}_${version}_SHA256SUMS $shasums_upload
     curl -Ss --upload-file ./terraform-provider-${PROVIDER_NAME}_${version}_SHA256SUMS.sig $shasums_sig_upload
 }
-
 
 # create provider platform for each type then upload the zipped binary along with its sha
 upload_zip_files() {
@@ -53,7 +50,7 @@ upload_zip_files() {
         arch=$2
         filename=$3
         sha_file="terraform-provider-${PROVIDER_NAME}_${version}_SHA256SUMS"
-        shasum=`grep $filename $sha_file | cut -d ' ' -f1` # get sha from downloaded SHA256SUMS release file
+        shasum=$(grep $filename $sha_file | cut -d ' ' -f1) # get sha from downloaded SHA256SUMS release file
         curl \
             -Ss \
             --header "Authorization: Bearer $TF_TOKEN" \
@@ -64,14 +61,14 @@ upload_zip_files() {
     }
 
     for name in $zip_file_names; do
-        os=`echo $name | cut -d '_' -f1`
-        arch=`echo $name | cut -d '_' -f2`
+        os=$(echo $name | cut -d '_' -f1)
+        arch=$(echo $name | cut -d '_' -f2)
         filename="terraform-provider-${PROVIDER_NAME}_${version}_${os}_${arch}.zip"
 
         # create platform to upload the file
-        resp=`create_provider_platform $os $arch $filename`
+        resp=$(create_provider_platform $os $arch $filename)
         # get url from reponse
-        provider_binary_upload_url=`echo $resp | jq -r '.data.links["provider-binary-upload"]'`
+        provider_binary_upload_url=$(echo $resp | jq -r '.data.links["provider-binary-upload"]')
         # upload the file
         curl -Ss -T $filename $provider_binary_upload_url
     done
