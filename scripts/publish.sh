@@ -79,6 +79,7 @@ upload_zip_files() {
         provider_binary_upload_url=$(echo $resp | jq -r '.data.links["provider-binary-upload"]')
         # upload the file
         curl -Ss -T $filename $provider_binary_upload_url
+        echo "### uploaded file $filename ###"
     done
 }
 
