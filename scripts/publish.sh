@@ -14,7 +14,7 @@ version=${version#v}           # remove the v at the beginning
 # list of all generated zip files without the .zip suffix
 # zip_file_names="darwin_amd64 darwin_arm64 freebsd_386 freebsd_amd64 freebsd_arm freebsd_arm64 linux_386 linux_amd64 linux_arm linux_arm64 windows_386 windows_amd64 windows_arm windows_arm64"
 
-# build is real fast when only building one version
+# build is real fast when only building one version (set in .goreleaser.yml)
 zip_file_names="linux_amd64"
 
 # download all the files that GoReleaser created in GitHub releases

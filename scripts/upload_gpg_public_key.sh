@@ -1,3 +1,4 @@
+# upload_gpg_public_key only needs to be run once so versions can be created (per provider, NOT version)
 function upload_gpg_public_key() {
     public_key=$(gpg --armor --export "$KEY_ID_OR_EMAIL") # get key from gpg
     public_key=${public_key//$'\n'/\\n}                   # replace newlines with \n char
