@@ -17,17 +17,21 @@ builds:
       - "-s -w -X main.version={{.Version}} -X main.commit={{.Commit}}"
     goos:
       - linux
-      # - freebsd
-      # - windows
-      # - darwin
+# for fast builds comment out starting here
+      - freebsd
+      - windows
+      - darwin
+# and ending here (to only build linux/amd64)
     goarch:
       - amd64
-      # - '386'
-      # - arm
-      # - arm64
-    # ignore:
-    #   - goos: darwin
-    #     goarch: '386'
+# for fast builds comment out starting here
+      - '386'
+      - arm
+      - arm64
+    ignore:
+      - goos: darwin
+        goarch: '386'
+# and ending here (to only build linux/amd64)
     binary: "{{ .ProjectName }}_v{{ .Version }}"
 archives:
   - format: zip
