@@ -22,9 +22,10 @@ function require_vars() {
         fi
     done
     if [[ missing -eq 1 ]]; then
-        exit 1;
+        exit 1
     fi
 }
+
 # ensure these variables are set
 require_vars TF_TOKEN TF_ORG PROVIDER_NAME BASE_URL
 # run the logic

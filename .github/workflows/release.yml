@@ -49,7 +49,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Publish to Terraform Cloud
-        run: ./publish.sh
+        run: ./scripts/publish.sh
         env:
           TF_TOKEN: ${{ secrets.TF_TOKEN }}
           GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
+          TF_ORG: "cambia-demo"
+          PROVIDER_NAME: "dorentest"
+          KEY_ID_OR_EMAIL: "doren.proctor@cambiahealth.com"
+          BASE_URL: "https://app.terraform.io/api/v2/organizations/cambia-demo/registry-providers"

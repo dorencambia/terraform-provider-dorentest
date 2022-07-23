@@ -1,4 +1,3 @@
-
 function upload_gpg_public_key() {
     public_key=$(gpg --armor --export "$KEY_ID_OR_EMAIL") # get key from gpg
     public_key=${public_key//$'\n'/\\n}                   # replace newlines with \n char
@@ -27,7 +26,7 @@ function require_vars() {
         fi
     done
     if [[ missing -eq 1 ]]; then
-        exit 1;
+        exit 1
     fi
 }
 
