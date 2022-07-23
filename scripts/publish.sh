@@ -19,6 +19,7 @@ zip_file_names="linux_amd64"
 
 # download all the files that GoReleaser created in GitHub releases
 download_release_files() {
+    echo "### downloading release files ###"
     base_download_url="${GITHUB_REPO_URL}}/releases/download"
     files="SHA256SUMS SHA256SUMS.sig"
     for zip_file in $zip_file_names; do
@@ -26,12 +27,13 @@ download_release_files() {
     done
     for file in $files; do
         filename="terraform-provider-${PROVIDER_NAME}_${version}_${file}"
-        curl -SsLO ${GITHUB_REPO_URL}/v${version}/$filename
+        curl -SsLO ${base_download_url}/v${version}/$filename
     done
 }
 
 # create the provider version and then upload the 2 SHA files
 upload_sha_files() {
+    echo "### uploading sha files ###"
     create_provider_version() {
         curl \
             -Ss \
@@ -50,6 +52,7 @@ upload_sha_files() {
 
 # create provider platform for each type then upload the zipped binary along with its sha
 upload_zip_files() {
+    echo "### uploading zip files ###"
     create_provider_platform() {
         os=$1
         arch=$2

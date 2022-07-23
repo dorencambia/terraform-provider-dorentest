@@ -55,6 +55,5 @@ jobs:
           GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
           TF_ORG: "cambia-demo"
           PROVIDER_NAME: "dorentest"
-          KEY_ID_OR_EMAIL: "doren.proctor@cambiahealth.com"
           TERRAFORM_REGISTRY_URL: "https://app.terraform.io/api/v2/organizations/cambia-demo/registry-providers"
           GITHUB_REPO_URL: "https://github.com/dorencambia/terraform-provider-dorentest"
