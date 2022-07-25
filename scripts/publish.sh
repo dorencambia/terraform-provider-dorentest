@@ -84,16 +84,6 @@ upload_zip_files() {
     done
 }
 
-check_required_env_vars() {
-    required="TF_TOKEN GPG_KEY_ID"
-    for x in $required; do
-        if [[ -z "${!x}" ]]; then
-            echo value required for ${x}
-            exit 1
-        fi
-    done
-}
-
 # print an error and exit if any passed vars are not defined
 # check every passed arg to see if a variable is set with its name.
 # print all missing variables and exit if any were missing
