@@ -31,7 +31,5 @@ function require_vars() {
     fi
 }
 
-# ensure these variables are set
 require_vars TF_TOKEN TF_ORG
-# run the logic
 upload_gpg_public_key

@@ -5,7 +5,6 @@
 # TERRAFORM_REGISTRY_URL: url to private terraform registry
 # GITHUB_REPO_URL: url to the github repo hosting the provider
 
-
 set -e # exit if any line fails
 
 version=$(git tag --points-at) # get the tag of the current commit
@@ -16,7 +15,6 @@ version=${version#v}           # remove the v at the beginning
 # set this to match the combinations in .goreleaser.yml
 zip_file_names="darwin_amd64 darwin_arm64 freebsd_386 freebsd_amd64 freebsd_arm freebsd_arm64 linux_386 linux_amd64 linux_arm linux_arm64 windows_386 windows_amd64 windows_arm windows_arm64"
 # zip_file_names="linux_amd64"
-
 
 # download all the files that GoReleaser created in GitHub releases
 download_release_files() {

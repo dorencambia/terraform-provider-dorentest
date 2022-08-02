@@ -26,7 +26,5 @@ function require_vars() {
     fi
 }
 
-# ensure these variables are set
 require_vars TF_TOKEN TF_ORG PROVIDER_NAME TERRAFORM_REGISTRY_URL
-# run the logic
 create_provider
