@@ -1,4 +1,4 @@
-# run `source ./set_env_vars.sh` to set these variables in your environment
+# run `source ./set_env_vars_example_values.sh` to set these variables in your environment
 
 # name of the organization in terraform cloud
 export TF_ORG="my-terraform-org"
